@@ -55,7 +55,7 @@ class QueryParser(Parser):
         queries_list = queries_raw.split(';')
         queries = {}
         for query_raw in queries_list:
-            if query_raw:
+            if query_raw.strip():
                 query_and_comment = query_raw.strip().split('\n')
                 comment = query_and_comment[0]
                 query = '\n'.join(query_and_comment[1:]).strip()
