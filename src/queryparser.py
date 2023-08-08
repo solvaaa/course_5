@@ -15,8 +15,14 @@ class QueryParser:
                 query = '\n'.join(query_and_comment[1:]).strip()
                 assert comment.startswith('--', 0, 2), f'Wrong query format near {query_raw}'
                 name = comment[2:]
+                queries[name] = query
+        self.queries = queries
 
-
-parser = QueryParser()
-parser.read()
-
+    def get_query(self, key):
+        try:
+            if key in self.queries:
+                return self.queries
+            else:
+                raise KeyError('No such query in file')
+        except AttributeError:
+            raise Exception('Query file not read')
