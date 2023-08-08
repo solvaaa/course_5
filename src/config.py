@@ -1,4 +1,4 @@
-from parser import ConfigParser
+from src.parser import ConfigParser
 
 
 def config(filename='database.ini', section='postgresql'):

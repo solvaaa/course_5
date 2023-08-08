@@ -1,5 +1,5 @@
-from config import config
-from parser import QueryParser
+from src.config import config
+from src.parser import QueryParser
 import psycopg2
 CREATE_TABLES_PATH = 'create_tables.sql'
 QUERIES_PATH = 'queries.sql'
@@ -45,6 +45,6 @@ class DBManager:
         conn.close()
 
 
-#man = DBManager()
-#man.create_database(config())
+man = DBManager()
+man.create_database(config())
 #man.execute_query('add_employer')
