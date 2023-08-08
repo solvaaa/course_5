@@ -1,7 +1,7 @@
 class ConfigParser:
 
     def __init__(self):
-        pass
+        self.config = {}
 
     def read(self, path):
         with open(path, 'r') as config_file:
@@ -9,7 +9,6 @@ class ConfigParser:
         if not config_data[0]:
             del config_data[0]
         config = {}
-        assert len(config_data) > 0
         for config_section in config_data:
             name, params = config_section.split(']\n')
             params_list = params.split('\n')
