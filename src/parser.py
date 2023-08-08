@@ -32,7 +32,7 @@ class ConfigParser(Parser):
     def __init__(self):
         self.config = {}
 
-    def read(self, path='src/database.ini') -> None:
+    def read(self, path) -> None:
         '''
         Читает содержимое файла,
         Результат, разделённый по секциям,
@@ -77,7 +77,7 @@ class QueryParser(Parser):
     def __init__(self):
         self.queries = {}
 
-    def read(self, path='src/queries.sql') -> None:
+    def read(self, path: str) -> None:
         '''
         Читает содержимое файла,
         Результат, разделённый по секциям,

@@ -4,7 +4,6 @@ from src.config import config
 
 #стандартные пути к файлам с заросами для создания и наполнения таблиц
 CREATE_TABLES_PATH = 'src/create_tables.sql'
-QUERIES_PATH = 'src/queries.sql'
 
 #список id интересующих нас работодателей
 EMPLOYERS = [1740, 3529, 80, 3776, 3127, 1122462, 9352463, 2748, 6836, 230005]

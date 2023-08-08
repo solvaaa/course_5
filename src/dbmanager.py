@@ -1,18 +1,20 @@
 from src.config import config
 from src.parser import QueryParser
 import psycopg2
-
+QUERIES_PATH = 'src/queries.sql'
 
 
 class DBManager:
-
+    '''
+    Класс для взаимодействия с базой данных
+    '''
     def __init__(self):
         '''
         Создаёт экзеспляр класса QueryParser,
         читает файл из пути по умолчанию
         '''
         self.__parser = QueryParser()
-        self.__parser.read()
+        self.__parser.read(QUERIES_PATH)
 
     def execute_query(self, query_name: str, query_params={}, params=config()) -> tuple:
         '''
@@ -68,7 +70,7 @@ class DBManager:
         colnames, response = self.execute_query('get_vacancies_with_higher_salary')
         return self.tuple_to_dict(colnames, response)
 
-    def get_vacancies_with_keyword(self, keyword, params=config()) -> list:
+    def get_vacancies_with_keyword(self, keyword: str, params=config()) -> list:
         '''
         получает список всех вакансий, у которых зарплата выше средней по всем вакансиям.
         Возвращает список словарей {colname: value}
@@ -78,7 +80,7 @@ class DBManager:
         return self.tuple_to_dict(colnames, response)
 
     @staticmethod
-    def tuple_to_dict(colnames, response):
+    def tuple_to_dict(colnames: list, response: list) -> list:
         '''
         Переводит результат execute_query из формата
         список кортежей в формат список словарей
