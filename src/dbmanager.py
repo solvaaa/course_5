@@ -1,7 +1,7 @@
-from api import HeadHunter
 from config import config
+from parser import QueryParser
 import psycopg2
-
+CREATE_TABLES_PATH = 'create_tables.sql'
 
 class DBManager:
 
@@ -16,7 +16,6 @@ class DBManager:
         cur = conn.cursor()
         try:
             cur.execute(f"DROP DATABASE {dbname}")
-            print('dropped')
         except psycopg2.errors.InvalidCatalogName:
             pass
         cur.execute(f"CREATE DATABASE {dbname}")
@@ -24,8 +23,10 @@ class DBManager:
 
         conn = psycopg2.connect(dbname=dbname, **params)
 
+        with open(CREATE_TABLES_PATH, 'r', encoding='utf-8') as queries_file:
+            query = queries_file.read()
 
-man = DBManager()
-params = config()
-print(config())
-man.create_database(params)
+        with conn.cursor() as cur:
+            cur.execute(query)
+        conn.commit()
+        conn.close()
