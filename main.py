@@ -1,13 +1,19 @@
 from src.dbmanager import DBManager
-from src.database_fill import create_database, fill_employer_table, fill_vacancies_table
+import src.database_fill as database_fill
 
 
 def interaction():
     dbmanager = DBManager()
-    create_database()
-    fill_employer_table()
-    fill_vacancies_table()
+    database_fill.create_database()
+    database_fill.fill_employer_table()
+    database_fill.fill_vacancies_table()
+
     result = dbmanager.get_all_vacancies()
+    #result = dbmanager.get_companies_and_vacancies_count()
+    #result = dbmanager.get_avg_salary()
+    #result = dbmanager.get_vacancies_with_higher_salary()
+    #result = dbmanager.get_vacancies_with_keyword('junior')
+
     print(*result, sep='\n')
 
 
