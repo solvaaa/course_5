@@ -36,13 +36,13 @@ class DBManager:
         conn.commit()
         conn.close()
 
-    def execute_query(self, query_name, params=config()):
+    def execute_query(self, query_name, query_params={}, params=config()):
         print(params)
         conn = psycopg2.connect(**params)
         conn.set_session(readonly=True, autocommit=True)
         query = self.__parser.get_item(query_name)
         with conn.cursor() as cur:
-            cur.execute(query)
+            cur.execute(query, query_params)
             rows = cur.fetchall()
         conn.commit()
         conn.close()
@@ -60,7 +60,11 @@ class DBManager:
     def get_vacancies_with_higher_salary(self, params=config()):
         return self.execute_query('get_vacancies_with_higher_salary')
 
+    def get_vacancies_with_keyword(self, keyword, params=config()):
+        keyword = '%' + keyword.lower() + '%'
+        return self.execute_query('get_vacancies_with_keyword', {"keyword": keyword})
 
-man = DBManager()
-man.create_database(config())
+
+#man = DBManager()
+#man.create_database(config())
 #man.execute_query('add_employer')
