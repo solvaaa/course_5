@@ -9,9 +9,9 @@ class DBManager:
 
     def __init__(self, create_tables_path=CREATE_TABLES_PATH,
                  queries_path=QUERIES_PATH):
-        self.create_tables_path = create_tables_path
-        self.parser = QueryParser()
-        self.parser.read(queries_path)
+        self.__create_tables_path = create_tables_path
+        self.__parser = QueryParser()
+        self.__parser.read(queries_path)
 
     def create_database(self, params=config()):
         dbname = params['database']
@@ -28,7 +28,7 @@ class DBManager:
 
         conn = psycopg2.connect(dbname=dbname, **params)
 
-        with open(self.create_tables_path, 'r', encoding='utf-8') as queries_file:
+        with open(self.__create_tables_path, 'r', encoding='utf-8') as queries_file:
             query = queries_file.read()
 
         with conn.cursor() as cur:
@@ -38,7 +38,7 @@ class DBManager:
 
     def execute_query(self, query_name, params=config()):
         conn = psycopg2.connect(**params)
-        query = self.parser.get_item(query_name)
+        query = self.__parser.get_item(query_name)
         with conn.cursor() as cur:
             cur.execute(query)
         conn.commit()
