@@ -1,9 +1,24 @@
-class ConfigParser:
+from abc import ABC, abstractmethod
+
+
+class Parser(ABC):
+
+    def read(self, path):
+        pass
+
+    def has_section(self, section):
+        pass
+
+    def get_item(self, section):
+        pass
+
+
+class ConfigParser(Parser):
 
     def __init__(self):
         self.config = {}
 
-    def read(self, path):
+    def read(self, path='database.ini'):
         with open(path, 'r') as config_file:
             config_data = config_file.read().split('[')
         if not config_data[0]:
@@ -22,7 +37,42 @@ class ConfigParser:
     def has_section(self, section):
         return section in self.config
 
-    def items(self, section):
-        return self.config[section]
+    def get_item(self, section):
+        if self.has_section(section):
+            return self.config[section]
+        else:
+            raise KeyError(f'No section {section} in config file')
 
 
+class QueryParser(Parser):
+
+    def __init__(self):
+        self.queries = {}
+
+    def read(self, path='queries.sql'):
+        with open(path, 'r', encoding='utf-8') as sql_file:
+            queries_raw = sql_file.read()
+        queries_list = queries_raw.split(';')
+        queries = {}
+        for query_raw in queries_list:
+            if query_raw:
+                query_and_comment = query_raw.strip().split('\n')
+                comment = query_and_comment[0]
+                query = '\n'.join(query_and_comment[1:]).strip()
+                assert comment.startswith('--', 0, 2), f'Wrong query format near {query_raw}'
+                name = comment[2:]
+                queries[name] = query
+        self.queries = queries
+
+    def has_section(self, section):
+        return section in self.queries
+
+    def get_item(self, section):
+        if self.has_section(section):
+            return self.queries[section]
+        else:
+            raise KeyError('No such query in file')
+
+par = QueryParser()
+par.read()
+print(par.get_item('SELECT1'))
