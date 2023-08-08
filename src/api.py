@@ -82,7 +82,8 @@ class HeadHunter():
                 'employer_id': employer_id,
                 'name': name,
                 'link': link,
-                'salary': salary,
+                'salary_from': salary['from'],
+                'salary_to': salary['to'],
                 'description': description,
             }
             output.append(item)
