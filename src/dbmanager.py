@@ -37,12 +37,28 @@ class DBManager:
         conn.close()
 
     def execute_query(self, query_name, params=config()):
+        print(params)
         conn = psycopg2.connect(**params)
+        conn.set_session(readonly=True, autocommit=True)
         query = self.__parser.get_item(query_name)
         with conn.cursor() as cur:
             cur.execute(query)
+            rows = cur.fetchall()
         conn.commit()
         conn.close()
+        return rows
+
+    def get_companies_and_vacancies_count(self, params=config()):
+        return self.execute_query('get_companies_and_vacancies_count')
+
+    def get_all_vacancies(self, params=config()):
+        return self.execute_query('get_all_vacancies')
+
+    def get_avg_salary(self, params=config()):
+        return self.execute_query('get_avg_salary')
+
+    def get_vacancies_with_higher_salary(self, params=config()):
+        return self.execute_query('get_vacancies_with_higher_salary')
 
 
 man = DBManager()
