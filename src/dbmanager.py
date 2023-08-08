@@ -1,8 +1,8 @@
 from src.config import config
 from src.parser import QueryParser
 import psycopg2
-CREATE_TABLES_PATH = 'create_tables.sql'
-QUERIES_PATH = 'queries.sql'
+CREATE_TABLES_PATH = 'src/create_tables.sql'
+QUERIES_PATH = 'src/queries.sql'
 
 
 class DBManager:

@@ -18,7 +18,7 @@ class ConfigParser(Parser):
     def __init__(self):
         self.config = {}
 
-    def read(self, path='database.ini'):
+    def read(self, path='src/database.ini'):
         with open(path, 'r') as config_file:
             config_data = config_file.read().split('[')
         if not config_data[0]:
@@ -49,7 +49,7 @@ class QueryParser(Parser):
     def __init__(self):
         self.queries = {}
 
-    def read(self, path='queries.sql'):
+    def read(self, path='src/queries.sql'):
         with open(path, 'r', encoding='utf-8') as sql_file:
             queries_raw = sql_file.read()
         queries_list = queries_raw.split(';')
