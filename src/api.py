@@ -33,7 +33,7 @@ class HeadHunter():
     '''
     Класс для получения информации из API HeadHunter.ru
     '''
-    def __init__(self, per_page=10):
+    def __init__(self, per_page=100):
         '''
         :param per_page: задаёт количество запрашиваемых вакансий. До 100
         '''
