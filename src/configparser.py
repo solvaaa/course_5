@@ -13,11 +13,11 @@ class ConfigParser:
         for config_section in config_data:
             name, params = config_section.split(']\n')
             params_list = params.split('\n')
-            config[name] = {}
+            config[name] = []
             for param in params_list:
                 if param:
                     param_key, param_value = param.split('=')
-                    config[name][param_key] = param_value
+                    config[name].append((param_key, param_value))
         self.config = config
 
     def has_section(self, section):
