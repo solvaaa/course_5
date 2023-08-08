@@ -51,6 +51,7 @@ def interaction():
     dbmanager.create_database()
     fill_employer_table(EMPLOYERS)
     fill_vacancies_table(EMPLOYERS)
+    print(*dbmanager.get_vacancies_with_higher_salary(), sep='\n')
 
 
 if __name__ == "__main__":
