@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
 import requests
-import psycopg2
-import csv
-from pprint import pprint
 
 
 class Api(ABC):
@@ -94,7 +91,6 @@ class HeadHunter():
         return output
 
     def get_employer_info(self, employer_id):
-#        params = {"employer_id": employer_id, "per_page": self.per_page}
         response = requests.get('https://api.hh.ru/employers/' + employer_id)
         employer_data = response.json()
         assert response.status_code == 200, 'Request not successful'
@@ -106,8 +102,3 @@ class HeadHunter():
             "description": employer_data["description"][:200]
         }
         return employer
-
-
-hh = HeadHunter()
-info = hh.get_employer_info('1740')
-pprint(info, width=140)
