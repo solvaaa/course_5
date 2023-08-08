@@ -30,4 +30,4 @@ ORDER BY salary_from DESC;
 --get_vacancies_with_keyword
 SELECT *
 FROM vacancies
-WHERE LOWER(name) LIKE %s
+WHERE LOWER(name) LIKE %(keyword)s
