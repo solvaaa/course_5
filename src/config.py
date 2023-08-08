@@ -1,4 +1,4 @@
-from configparser import ConfigParser
+from parser import ConfigParser
 
 
 def config(filename='database.ini', section='postgresql'):
@@ -6,7 +6,7 @@ def config(filename='database.ini', section='postgresql'):
     parser.read(filename)
     db_params = {}
     if parser.has_section(section):
-        params = parser.items(section)
+        params = parser.get_item(section)
         for param in params:
             db_params[param[0]] = param[1]
     else:

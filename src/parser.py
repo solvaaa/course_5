@@ -72,7 +72,3 @@ class QueryParser(Parser):
             return self.queries[section]
         else:
             raise KeyError('No such query in file')
-
-par = QueryParser()
-par.read()
-print(par.get_item('SELECT1'))
