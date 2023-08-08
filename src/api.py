@@ -39,17 +39,17 @@ class HeadHunter():
         '''
         self.per_page = per_page
 
-    def get_info(self, employer_id):
+    def get_info(self, employer_id: int):
         '''
         Метод для получения сырой информации из API по id работодателя.
         Возвращает список словарей
         '''
-        params = {"employer_id": employer_id, "per_page": self.per_page}
+        params = {"employer_id": str(employer_id), "per_page": self.per_page}
         response = requests.get('https://api.hh.ru/vacancies', params)
         assert response.status_code == 200, 'Request not successful'
         return response.json()['items']
 
-    def output_info(self, employer_id):
+    def output_info(self, employer_id: int):
         '''
         Метод возвращает отформатированную информацию о вакансиях
         по ключевому слову.
@@ -60,6 +60,7 @@ class HeadHunter():
         hh_output = self.get_info(employer_id)
         output = []
         for info in hh_output:
+            vacancy_id = int(info['id'])
             name = info['name']
             link = info['alternate_url']
             if info['salary'] is not None:
@@ -79,6 +80,7 @@ class HeadHunter():
                 description = None
 
             item = {
+                'vacancy_id': vacancy_id,
                 'employer_id': employer_id,
                 'name': name,
                 'link': link,
@@ -89,8 +91,8 @@ class HeadHunter():
             output.append(item)
         return output
 
-    def get_employer_info(self, employer_id):
-        response = requests.get('https://api.hh.ru/employers/' + employer_id)
+    def get_employer_info(self, employer_id: int):
+        response = requests.get('https://api.hh.ru/employers/' + str(employer_id))
         employer_data = response.json()
         assert response.status_code == 200, 'Request not successful'
 
