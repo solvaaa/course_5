@@ -12,16 +12,16 @@ SELECT
 	salary_to,
 	vacancies.url
 FROM employers
-JOIN vacancies USING(employer_id)
+JOIN vacancies USING(employer_id);
 
 --get_avg_salary
 SELECT
 	ROUND(AVG(salary_from)) AS average_salary
-FROM vacancies
+FROM vacancies;
 
 --get_vacancies_with_higher_salary
 SELECT *
 FROM vacancies
 WHERE salary_from > (
 	SELECT AVG(salary_from)
-	FROM vacancies)
+	FROM vacancies);
