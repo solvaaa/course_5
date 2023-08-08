@@ -24,7 +24,8 @@ SELECT *
 FROM vacancies
 WHERE salary_from > (
 	SELECT AVG(salary_from)
-	FROM vacancies);
+	FROM vacancies)
+ORDER BY salary_from DESC;
 
 --get_vacancies_with_keyword
 SELECT *
