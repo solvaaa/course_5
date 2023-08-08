@@ -25,3 +25,8 @@ FROM vacancies
 WHERE salary_from > (
 	SELECT AVG(salary_from)
 	FROM vacancies);
+
+--get_vacancies_with_keyword
+SELECT *
+FROM vacancies
+WHERE LOWER(name) LIKE %(keyword)s
