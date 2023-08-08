@@ -29,4 +29,4 @@ WHERE salary_from > (
 --get_vacancies_with_keyword
 SELECT *
 FROM vacancies
-WHERE LOWER(name) LIKE %(keyword)s
+WHERE LOWER(name) LIKE %s
