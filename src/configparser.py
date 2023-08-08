@@ -20,8 +20,10 @@ class ConfigParser:
                     config[name][param_key] = param_value
         self.config = config
 
+    def has_section(self, section):
+        return section in self.config
 
-cp = ConfigParser()
-res = cp.read('database.ini')
+    def items(self, section):
+        return self.config[section]
 
 
