@@ -15,3 +15,6 @@ CREATE TABLE vacancies (
     description TEXT
 );
 
+ALTER TABLE vacancies ADD CONSTRAINT fk_vacancies_employers
+    FOREIGN KEY(employer_id) REFERENCES employers(employer_id);
+
