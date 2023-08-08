@@ -60,7 +60,6 @@ class HeadHunter():
         hh_output = self.get_info(employer_id)
         output = []
         for info in hh_output:
-            id = int(info['id'])
             name = info['name']
             link = info['alternate_url']
             if info['salary'] is not None:
@@ -80,7 +79,6 @@ class HeadHunter():
                 description = None
 
             item = {
-                'id': id,
                 'employer_id': employer_id,
                 'name': name,
                 'link': link,
