@@ -20,7 +20,7 @@ class Api(ABC):
         Метод возвращает отформатированную информацию о вакансиях
         по ключевому слову.
         Содержит следующие поля:
-        id, name, link, salary, description, date_published
+        id, name, url, salary, description, date_published
         salary - словарь с ключами to и from
         '''
         pass
@@ -54,7 +54,7 @@ class HeadHunter():
         Метод возвращает отформатированную информацию о вакансиях
         по ключевому слову.
         Содержит следующие поля:
-        id, name, link, salary, description, date_published
+        id, name, url, salary, description, date_published
         salary - словарь с ключами to и from
         '''
         hh_output = self.get_info(employer_id)
@@ -62,7 +62,7 @@ class HeadHunter():
         for info in hh_output:
             vacancy_id = int(info['id'])
             name = info['name']
-            link = info['alternate_url']
+            url = info['alternate_url']
             if info['salary'] is not None:
                 salary = {
                     'from': info['salary']['from'],
@@ -83,7 +83,7 @@ class HeadHunter():
                 'vacancy_id': vacancy_id,
                 'employer_id': employer_id,
                 'name': name,
-                'link': link,
+                'url': url,
                 'salary_from': salary['from'],
                 'salary_to': salary['to'],
                 'description': description,
