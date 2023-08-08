@@ -1,7 +1,7 @@
 class QueryParser:
 
     def __init__(self):
-        pass
+        self.queries = {}
 
     def read(self, path='queries.sql'):
         with open(path, 'r', encoding='utf-8') as sql_file:
@@ -19,10 +19,10 @@ class QueryParser:
         self.queries = queries
 
     def get_query(self, key):
-        try:
+        if self.queries:
             if key in self.queries:
                 return self.queries
             else:
                 raise KeyError('No such query in file')
-        except AttributeError:
+        else:
             raise Exception('Query file not read')
