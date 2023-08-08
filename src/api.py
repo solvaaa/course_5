@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import requests
+
+#Максимальное количество просматриваемых страниц по одному запросу output_info
 MAX_PAGE = 2
 
 class Api(ABC):
@@ -7,25 +9,29 @@ class Api(ABC):
     Базовый класс для работы с API сайтов по поиску работы
     '''
     @abstractmethod
-    def get_info(self, employer_id):
+    def get_info(self, employer_id: int) -> list:
         '''
-        Метод для получения сырой информации из API по id работодателя.
+        Метод для получения сырой информации о вакансиях из API по id работодателя.
         Возвращает список словарей
         '''
         pass
 
     @abstractmethod
-    def output_info(self, employer_id):
+    def output_info(self, employer_id:int) -> list:
         '''
         Метод возвращает отформатированную информацию о вакансиях
         по ключевому слову.
         Содержит следующие поля:
-        id, name, url, salary, description, date_published
-        salary - словарь с ключами to и from
+        vacancy_id, name, url, salary_from, salary_to, description
         '''
         pass
 
-    def get_employer_info(self, employer_id):
+    def get_employer_info(self, employer_id: int) -> dict:
+        '''
+        Метод возвращает информацию о работодателе по его id
+        Содержит следующие поля:
+        employee_id, name, url, description
+        '''
         pass
 
 
@@ -39,15 +45,15 @@ class HeadHunter():
         '''
         self.per_page = per_page
 
-    def get_number_of_pages(self, employer_id):
+    def get_number_of_pages(self, employer_id: int) -> int:
         params = {"employer_id": str(employer_id), "per_page": self.per_page}
         response = requests.get('https://api.hh.ru/vacancies', params)
         assert response.status_code == 200, 'Request not successful'
-        return response.json()['pages']
+        return int(response.json()['pages'])
 
-    def get_info(self, page, employer_id: int):
+    def get_info(self, page, employer_id: int) -> list:
         '''
-        Метод для получения сырой информации из API по id работодателя.
+        Метод для получения сырой информации о вакансиях из API по id работодателя.
         Возвращает список словарей
         '''
         params = {"area": 113, "employer_id": str(employer_id), "per_page": self.per_page, "page": page}
@@ -55,13 +61,12 @@ class HeadHunter():
         assert response.status_code == 200, f'Request not successful ({response.status_code})'
         return response.json()['items']
 
-    def output_info(self, employer_id: int):
+    def output_info(self, employer_id: int) -> list:
         '''
         Метод возвращает отформатированную информацию о вакансиях
         по ключевому слову.
         Содержит следующие поля:
-        id, name, url, salary, description, date_published
-        salary - словарь с ключами to и from
+        vacancy_id, name, url, salary_from, salary_to, description
         '''
         page = 0
         max_page = self.get_number_of_pages(employer_id)
@@ -106,7 +111,12 @@ class HeadHunter():
             page += 1
         return output
 
-    def get_employer_info(self, employer_id: int):
+    def get_employer_info(self, employer_id: int) -> dict:
+        '''
+        Метод возвращает информацию о работодателе по его id
+        Содержит следующие поля:
+        employee_id, name, url, description
+        '''
         response = requests.get('https://api.hh.ru/employers/' + str(employer_id))
         employer_data = response.json()
         assert response.status_code == 200, 'Request not successful'

@@ -2,23 +2,42 @@ from abc import ABC, abstractmethod
 
 
 class Parser(ABC):
-
-    def read(self, path):
+    '''
+    Базовый класс для парсинга файлов с инструкциями
+    '''
+    def read(self, path: str) -> None:
+        '''
+        Читает содержимое файла,
+        Результат записывается в атрибут экземпляра класса
+        '''
         pass
 
-    def has_section(self, section):
+    def has_section(self, section: str) -> bool:
+        '''
+        Проверяет наличие секции section внутри прочитанного файла
+        '''
         pass
 
-    def get_item(self, section):
+    def get_item(self, section: str):
+        '''
+        Возвращает параметры внутри секции файла
+        '''
         pass
 
 
 class ConfigParser(Parser):
-
+    '''
+    Класс для парсинга файлов .ini
+    '''
     def __init__(self):
         self.config = {}
 
-    def read(self, path='src/database.ini'):
+    def read(self, path='src/database.ini') -> None:
+        '''
+        Читает содержимое файла,
+        Результат, разделённый по секциям,
+        записывается в атрибут экземпляра класса self.config (dict)
+        '''
         with open(path, 'r') as config_file:
             config_data = config_file.read().split('[')
         if not config_data[0]:
@@ -34,10 +53,17 @@ class ConfigParser(Parser):
                     config[name].append((param_key, param_value))
         self.config = config
 
-    def has_section(self, section):
+    def has_section(self, section: str) -> None:
+        '''
+        Проверяет наличие секции section внутри прочитанного файла
+        '''
         return section in self.config
 
-    def get_item(self, section):
+    def get_item(self, section: str) -> list:
+        '''
+        Возвращает параметры внутри секции файла
+        в виде списка кортежей (key, value)
+        '''
         if self.has_section(section):
             return self.config[section]
         else:
@@ -45,11 +71,19 @@ class ConfigParser(Parser):
 
 
 class QueryParser(Parser):
-
+    '''
+    Класс для парсинга файлов .sql
+    '''
     def __init__(self):
         self.queries = {}
 
-    def read(self, path='src/queries.sql'):
+    def read(self, path='src/queries.sql') -> None:
+        '''
+        Читает содержимое файла,
+        Результат, разделённый по секциям,
+        записывается в атрибут экземпляра класса self.queries (dict),
+        где ключ - название, значение - код запроса
+        '''
         with open(path, 'r', encoding='utf-8') as sql_file:
             queries_raw = sql_file.read()
         queries_list = queries_raw.split(';')
@@ -58,16 +92,23 @@ class QueryParser(Parser):
             if query_raw.strip():
                 query_and_comment = query_raw.strip().split('\n')
                 comment = query_and_comment[0]
-                query = '\n'.join(query_and_comment[1:]).strip()
+                query = query_raw.strip()
                 assert comment.startswith('--', 0, 2), f'Wrong query format near {query_raw}'
                 name = comment[2:]
                 queries[name] = query
         self.queries = queries
 
-    def has_section(self, section):
+    def has_section(self, section: str) -> bool:
+        '''
+        Проверяет наличие секции (запроса с названием) section внутри прочитанного файла
+        '''
         return section in self.queries
 
-    def get_item(self, section):
+    def get_item(self, section: str) -> str:
+        '''
+        Возвращает код запроса section из файла
+        в виде строки
+        '''
         if self.has_section(section):
             return self.queries[section]
         else:

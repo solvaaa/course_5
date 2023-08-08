@@ -1,12 +1,21 @@
 import psycopg2
 from src.api import HeadHunter
 from src.config import config
+
+#стандартные пути к файлам с заросами для создания и наполнения таблиц
 CREATE_TABLES_PATH = 'src/create_tables.sql'
 QUERIES_PATH = 'src/queries.sql'
+
+#список id интересующих нас работодателей
 EMPLOYERS = [1740, 3529, 80, 3776, 3127, 1122462, 9352463, 2748, 6836, 230005]
 
 
-def create_database(create_tables_path=CREATE_TABLES_PATH, params=config()):
+def create_database(create_tables_path=CREATE_TABLES_PATH, params=config()) -> None:
+    '''
+    Создаёт базу данных по параметрам в params (параметры из database.ini по умолчанию.
+    Заменяет базу данных, если она уже существует.
+    Затем применяет запросы для создания таблиц из файла create_tables_path
+    '''
     dbname = params['database']
     del params['database']
     conn = psycopg2.connect(dbname='postgres', **params)
@@ -30,7 +39,11 @@ def create_database(create_tables_path=CREATE_TABLES_PATH, params=config()):
     conn.close()
 
 
-def fill_employer_table(employers=EMPLOYERS):
+def fill_employer_table(employers=EMPLOYERS) -> None:
+    '''
+    Заполняет таблицу employers данными, полученными из API HeadHunter
+    по id работодателей из списка employers
+    '''
     hh_api = HeadHunter()
     params = config()
     conn = psycopg2.connect(**params)
@@ -46,7 +59,11 @@ def fill_employer_table(employers=EMPLOYERS):
     conn.close()
 
 
-def fill_vacancies_table(employers=EMPLOYERS):
+def fill_vacancies_table(employers=EMPLOYERS) -> None:
+    '''
+    Заполняет таблицу vacancies данными о вакансиях каждого работодателя из списка employers.
+    Данные из API HeadHunter
+    '''
     hh_api = HeadHunter()
     params = config()
     conn = psycopg2.connect(**params)

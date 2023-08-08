@@ -1,7 +1,14 @@
 from src.parser import ConfigParser
 
 
-def config(filename='src/database.ini', section='postgresql'):
+def config(filename='src/database.ini', section='postgresql') -> dict:
+    '''
+    Функция для получения параметров вбазы данных в виде словаря
+    из определённой секции .ini файла
+    :param filename: Путь к файлу параметров базы данных
+    :param section: Название секции внутри .ini файла
+    :return: Словарь с параметрами
+    '''
     parser = ConfigParser()
     parser.read(filename)
     db_params = {}

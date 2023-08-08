@@ -1,3 +1,6 @@
+--Все запросы в формате:
+--Название
+--Запрос;
 --get_companies_and_vacancies_count
 SELECT employers.name, COUNT(vacancy_id) AS num_of_vacancies
 FROM employers
