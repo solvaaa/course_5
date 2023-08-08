@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import requests
+MAX_PAGE = 2
 
 class Api(ABC):
     '''
@@ -66,10 +67,10 @@ class HeadHunter():
         max_page = self.get_number_of_pages(employer_id)
         output = []
         found_check = set()
-        while page < max_page and page * self.per_page < 2000:
+        while page < MAX_PAGE and page < max_page and page * self.per_page < 2000:
             hh_output = self.get_info(page, employer_id)
             for info in hh_output:
-                if info['archived']:
+                if not info['archived']:
                     vacancy_id = int(info['id'])
                     name = info['name']
                     url = info['alternate_url']
